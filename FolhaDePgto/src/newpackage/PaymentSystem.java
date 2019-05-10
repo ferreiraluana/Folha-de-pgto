@@ -5,14 +5,44 @@ public class PaymentSystem
     public static void main(String[] args)
     {
         System.out.println("***   Welcome to the Employee Payment System   ***");
-        System.out.println("Continue to add an employee");
+        System.out.println("Available operations:");
+        System.out.print("Options:\n 1. Add a new employee\n 2. Remove an employee\n");
+        System.out.println("3. Launch Frequency information"); // lançar cartão de ponto
+        System.out.println("4. Launch Selling Results");
+        System.out.println("5. Launch Service Taxes"); // extra
+        System.out.println("6. Change employee information");
+        System.out.println("7. Run Payrow\n8. Undo/Redo");
+        System.out.println("9. Payment Schedule");
+        System.out.println("10. Create new Payment Schedule\n");
+
+        System.out.println("Enter the code to an operation:");
         Scanner data = new Scanner(System.in);
-        Employee person = new Employee();
-        readData(data, person);
-        printData(data, person);
+        int op = data.nextInt();
+        String buffer = data.nextLine();
+        Employee[] person = new Employee[100];
+
+        if(op == 1)
+        {
+            int i;
+            int id = -1;
+            for(i = 1; i < person.length; i++)
+            {
+                if(person[i] == null)
+                {
+                    id = i;
+                    break;
+                }
+            }
+            if(id != -1)
+            {
+                readData(data, person, id);
+                printData(person, id);
+            }
+            else System.out.println("System Capacity Overflow");
+        }
     }
 
-    public static void readData(Scanner data, Employee person)
+    private static void readData(Scanner data, Employee[] person, int id)
     {
 
         System.out.println("Enter the employee full name:");
@@ -24,8 +54,6 @@ public class PaymentSystem
         System.out.println("Enter the type of employee: HOURLY or SALARIED");
         String type = data.nextLine();
 
-        //String getchar = data.nextLine();
-
         System.out.println("Enter the salary:");
         float salary = data.nextFloat();
 
@@ -36,23 +64,18 @@ public class PaymentSystem
 
         float extra = data.nextFloat();
 
-        System.out.println("Enter the associated number to this employee:");
-        int number = data.nextInt();
-
-        person.addEmployee(name,address,type,salary,extra,number);
+        person[id].addEmployee(name,address,type,salary,extra,id);
     }
 
-    public static void printData(Scanner data, Employee person)
+    private static void printData(Employee[] person, int id)
     {
-        System.out.println();
-        System.out.println("Employee succesfully registered!");
-        System.out.println(person.name);
-        System.out.println(person.address);
-        System.out.println(person.type);
-        System.out.println(person.salary);
-        System.out.println(person.extra);
-        System.out.println(person.number);
-        System.out.println();
-        System.out.println("***   Thank you for using our services   ***");
+        System.out.println("\nEmployee succesfully registered!");
+        System.out.println(person[id].name);
+        System.out.println(person[id].address);
+        System.out.println(person[id].type);
+        System.out.println(person[id].salary);
+        System.out.println(person[id].extra);
+        System.out.println(person[id].id);
+        System.out.println("\n***   Thank you for using our services   ***");
     }
 }
