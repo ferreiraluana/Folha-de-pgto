@@ -2,6 +2,15 @@ package newpackage;
 import java.util.Scanner;
 public class PaymentSystem
 {
+    static String[] name = new String[100];
+    static String[] address = new String[100];
+    static String[] type = new String[100]; //hourly (with extra hour or not), salaried (commissioned or not)
+    static float[] salary = new String[100];
+    static float[] extra = new float[100];
+    static int[] id = new int[100];
+
+    Scanner data = new Scanner(System.in);
+
     public static void main(String[] args)
     {
         System.out.println("***   Welcome to the Employee Payment System   ***");
@@ -16,33 +25,31 @@ public class PaymentSystem
         System.out.println("10. Create new Payment Schedule\n");
 
         System.out.println("Enter the code to an operation:");
-        Scanner data = new Scanner(System.in);
         int op = data.nextInt();
         String buffer = data.nextLine();
-        Employee[] person = new Employee[100];
 
         if(op == 1)
         {
-            int i;
-            int id = -1;
-            for(i = 1; i < person.length; i++)
-            {
-                if(person[i] == null)
-                {
-                    id = i;
-                    break;
-                }
-            }
-            if(id != -1)
-            {
-                readData(data, person, id);
-                printData(person, id);
-            }
-            else System.out.println("System Capacity Overflow");
+//            int i;
+//            int id = -1;
+//            for(i = 1; i < person.length; i++)
+//            {
+//                if(person[i] == null)
+//                {
+//                    id = i;
+//                    break;
+//                }
+//            }
+//            if(id != -1)
+//            {
+                readData(data, 1);
+                printData();
+//            }
+//            else System.out.println("System Capacity Overflow");
         }
     }
 
-    private static void readData(Scanner data, Employee[] person, int id)
+    private static void readData(Scanner data, int id)
     {
 
         System.out.println("Enter the employee full name:");
@@ -64,18 +71,59 @@ public class PaymentSystem
 
         float extra = data.nextFloat();
 
-        person[id].addEmployee(name,address,type,salary,extra,id);
+        addEmployee(name,address,type,salary,extra,id);
     }
 
-    private static void printData(Employee[] person, int id)
+    private static void printData()
     {
         System.out.println("\nEmployee succesfully registered!");
-        System.out.println(person[id].name);
-        System.out.println(person[id].address);
-        System.out.println(person[id].type);
-        System.out.println(person[id].salary);
-        System.out.println(person[id].extra);
-        System.out.println(person[id].id);
+        System.out.println(this.name);
+        System.out.println(this.address);
+        System.out.println(this.type);
+        System.out.println(this.salary);
+        System.out.println(this.extra);
+        System.out.println(this.id);
         System.out.println("\n***   Thank you for using our services   ***");
     }
+
+    public static void addEmployee(String name, String address, String type, float salary, float extra, int id)
+    {
+        this.name = name;
+        this.address = address;
+        this.type = type;
+        this.salary = salary;
+        this.extra = extra;
+        this.id = id;
+    }
+
+    public static void setName(String name)
+    {
+        name = name;
+    }
+
+    public static void setAddress(String address)
+    {
+        address = address;
+    }
+
+    public static void setType(String type)
+    {
+        type = type;
+    }
+
+    public static void setSalary(float salary)
+    {
+        salary = salary;
+    }
+
+    public static void setExtra(float extra)
+    {
+        extra = extra;
+    }
+
+    public static void setId(int id)
+    {
+        id = id;
+    }
+
 }
