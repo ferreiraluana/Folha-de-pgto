@@ -2,19 +2,22 @@ package newpackage;
 import java.util.Scanner;
 public class PaymentSystem
 {
-    static String[] name = new String[100];
-    static String[] address = new String[100];
-    static String[] type = new String[100]; //hourly (with extra hour or not), salaried (commissioned or not)
-    static float[] salary = new String[100];
-    static float[] extra = new float[100];
-    static int[] id = new int[100];
+    private final static int numberEmployee = 100;
+    private static String[] name = new String[numberEmployee];
+    private static String[] address = new String[numberEmployee];
+    private static String[] type = new String[numberEmployee]; //hourly (with extra hour or not), salaried (commissioned or not)
+    private static float[] salary = new float[numberEmployee];
+    private static float[] extra = new float[numberEmployee];
+    private static boolean[] union = new boolean[numberEmployee];
+    private static float[] unionFee = new float[numberEmployee];
+    private static int[] id = new int[numberEmployee];
 
-    Scanner data = new Scanner(System.in);
+    private static Scanner data = new Scanner(System.in);
 
     public static void main(String[] args)
     {
         System.out.println("***   Welcome to the Employee Payment System   ***");
-        System.out.println("Available operations:");
+        System.out.println("Available operations: [1]/[6]");
         System.out.print("Options:\n 1. Add a new employee\n 2. Remove an employee\n");
         System.out.println("3. Launch Frequency information"); // lançar cartão de ponto
         System.out.println("4. Launch Selling Results");
@@ -24,28 +27,83 @@ public class PaymentSystem
         System.out.println("9. Payment Schedule");
         System.out.println("10. Create new Payment Schedule\n");
 
+        setArray();
+
         System.out.println("Enter the code to an operation:");
-        int op = data.nextInt();
+        int operation = data.nextInt();
         String buffer = data.nextLine();
 
-        if(op == 1)
+        if(operation == 1)
         {
-//            int i;
-//            int id = -1;
-//            for(i = 1; i < person.length; i++)
-//            {
-//                if(person[i] == null)
-//                {
-//                    id = i;
-//                    break;
-//                }
-//            }
-//            if(id != -1)
-//            {
-                readData(data, 1);
-                printData();
-//            }
-//            else System.out.println("System Capacity Overflow");
+            operation1();
+        }
+
+        if(operation == 6)
+        {
+            operation6();
+        }
+    }
+
+    private static void operation1()
+    {
+        int i;
+        for(i = 1; i < numberEmployee; i++)
+        {
+            if(id[i] == -1)
+            {
+                id[i] = i;
+                readData(data, i);
+                printData(i);
+                break;
+            }
+        }
+        if(i == numberEmployee - 1) System.out.println("System Capacity Overflow");
+    }
+
+    private static void operation6()
+    {
+        System.out.println("Enter the employee ID:");
+        int i = data.nextInt();
+        System.out.println("Information available:\n[N]ame | [A]ddress | [T]ype | [S]alary | [E]xtra | [I]d");
+        String detail = data.nextLine();
+
+        switch (detail)
+        {
+            case "N":
+                System.out.println("Enter new name:");
+                String aux1 = data.nextLine();
+                setName(aux1, i);
+            case "A":
+                System.out.println("Enter new address:");
+                String aux3 = data.nextLine();
+                setAddress(aux3, i);
+            case "T":
+                System.out.println("Enter new type:");
+                String aux5 = data.nextLine();
+                setType(aux5, i);
+            case "S":
+                System.out.println("Enter new salary:");
+                float aux7 = data.nextFloat();
+                setSalary(aux7, i);
+            case "E":
+                System.out.println("Enter new extra:");
+                float aux9 = data.nextFloat();
+                setExtra(aux9, i);
+
+            default:
+                System.out.println("INVALID INPUT");
+        }
+    }
+
+    private static void setArray()
+    {
+        int i;
+        for(i=1; i<numberEmployee; i++)
+        {
+            id[i] = -1;
+            salary[i] = 0;
+            extra[i] = 0;
+            unionFee[i] = 0;
         }
     }
 
@@ -71,59 +129,81 @@ public class PaymentSystem
 
         float extra = data.nextFloat();
 
-        addEmployee(name,address,type,salary,extra,id);
+        System.out.println("Union membership: [M]ember | [N]ot member");
+        String membership1 = data.nextLine();
+
+        float fee = 0;
+        boolean membership = false;
+        if(membership1.equals("M"))
+        {
+            membership = true;
+            System.out.println("Enter union fee:");
+            fee = data.nextFloat();
+        }
+
+        addEmployee(name,address,type,salary,extra,membership,fee,id);
     }
 
-    private static void printData()
+    private static void addEmployee(String name1, String address1, String type1, float salary1, float extra1, boolean union1, float fee, int i)
+    {
+        name[i] = name1;
+        address[i] = address1;
+        type[i] = type1;
+        salary[i] = salary1;
+        extra[i] = extra1;
+        if(union1) union[i] = true;
+        else union[i] = false;
+        unionFee[i] = fee;
+    }
+
+    private static void printData(int i)
     {
         System.out.println("\nEmployee succesfully registered!");
-        System.out.println(this.name);
-        System.out.println(this.address);
-        System.out.println(this.type);
-        System.out.println(this.salary);
-        System.out.println(this.extra);
-        System.out.println(this.id);
+        System.out.println("Name: "+name[i]);
+        System.out.println("Address: "+address[i]);
+        System.out.println("Type: "+type[i]);
+        System.out.println("Salary: "+salary[i]);
+        System.out.println("Extra: "+extra[i]);
+        System.out.println("Union membership: "+union[i]);
+        System.out.println("Union Fee: "+unionFee[i]);
+        System.out.println("Id number: "+id[i]);
         System.out.println("\n***   Thank you for using our services   ***");
     }
 
-    public static void addEmployee(String name, String address, String type, float salary, float extra, int id)
+    private static void setName(String name1, int i)
     {
-        this.name = name;
-        this.address = address;
-        this.type = type;
-        this.salary = salary;
-        this.extra = extra;
-        this.id = id;
+        name[i] = name1;
     }
 
-    public static void setName(String name)
+    private static void setAddress(String address1, int i)
     {
-        name = name;
+        address[i] = address1;
     }
 
-    public static void setAddress(String address)
+    private static void setType(String type1, int i)
     {
-        address = address;
+        type[i] = type1;
     }
 
-    public static void setType(String type)
+    private static void setSalary(float salary1, int i)
     {
-        type = type;
+        salary[i] = salary1;
     }
 
-    public static void setSalary(float salary)
+    private static void setExtra(float extra1, int i)
     {
-        salary = salary;
+        extra[i] = extra1;
     }
 
-    public static void setExtra(float extra)
+    private static void setUnion(boolean union1, int i)
     {
-        extra = extra;
+        if(union1) union[i] = true;
+        else union[i] = false;
     }
 
-    public static void setId(int id)
+    private static void setUnionFee(float unionFee1, int i)
     {
-        id = id;
+        unionFee[i] = unionFee1;
     }
 
 }
